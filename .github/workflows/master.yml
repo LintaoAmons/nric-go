@@ -1,0 +1,49 @@
+name: master workflow
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: unbuntu-latest
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: compile all
+        run: make all
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: artifact/*
+
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+      
+      - name: Display structure of downloads
+        run: ls -R
+
+      - name: Publish release
+        env:
+          DEBUG: api
+        run: |
+          ls
+          ls artifacts
+          echo ${artifacts/*}
+          gh release create v0.1.0 --title "RELEASE" --target $GITHUB_SHA artifacts/*

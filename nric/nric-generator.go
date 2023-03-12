@@ -83,6 +83,16 @@ func lastChar2(val int) string {
 	}
 }
 
+func GenerateNricMultiple(count int) string {
+	nrics := []string{}
+	for i := 0; i < count; i++ {
+		nrics = append(nrics, GenerateNric())
+
+	}
+	nricsString := strings.Join(nrics, "\n")
+	return nricsString
+}
+
 func GenerateNric() string {
 	rand.Seed(time.Now().UnixNano())
 	nric := []string{}

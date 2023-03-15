@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/atotto/clipboard"
 )
 
 func firstChar(val int) string {
@@ -119,7 +117,6 @@ func GenerateNric() string {
 		nric = append(nric, lastChar2(y))
 	}
 	nricString := strings.Join(nric, "")
-	clipboard.WriteAll(nricString)
 	return nricString
 }
 
